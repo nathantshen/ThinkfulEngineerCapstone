@@ -14,13 +14,13 @@ router
   .all(methodNotAllowed);
 
 router
-  .route("/:reservationId([0-9]+)")
+  .route("/:reservationId")
   .get(controller.read)
   .put(controller.updateReservation)
   .all(methodNotAllowed);
 
 router
-  .route("/:reservationId([0-9]+)/status")
+  .route("/:reservationId/status")
   .put(controller.updateStatus)
   .all(methodNotAllowed);
 
