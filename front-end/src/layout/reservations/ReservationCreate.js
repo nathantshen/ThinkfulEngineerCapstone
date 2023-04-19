@@ -17,7 +17,7 @@ function ReservationCreate({ date }) {
     people: "1",
   })
 
-  // TODO Create Change Handler √
+  // TODO Create Change Handler 
   const handleChange = ({ target }) => {
     setReservation({
       ...reservation,
@@ -25,7 +25,7 @@ function ReservationCreate({ date }) {
     });
   }
 
-  // TODO Create Submit Handler √
+  // TODO Create Submit Handler 
   function handleSubmit(event) {
     event.preventDefault();
     createReservation({
@@ -84,10 +84,10 @@ function ReservationCreate({ date }) {
               className="form-control"
               id="mobile_number"
               name="mobile_number"
-              type="text"
+              type="number"
               onChange={handleChange}
               required={true}
-              placeholder="(xxx) xxx-xxxx"
+              placeholder="xxxxxxxxxx"
               value={reservation.mobile_number}
             />
             <small className="form-text text-muted"> Enter Mobile Number </small>
