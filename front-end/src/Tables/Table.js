@@ -1,46 +1,44 @@
-import { useState } from 'react';
-import { deleteTable } from "../utils/api";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { finishTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-export default function Table({ tables }) {
+export default function Table({ table, table_name, capacity, status }) {
 
-    const [ tablesError, setTablesError ] = useState(null);
-    
-    const finishHandler = event => {
-        const controller = new AbortController();
-        const userChoice = window.confirm("Is this table ready to seat new guests? This cannot be undone.");
-        if(userChoice) {
-            deleteTable(Number(event.target.value), controller.signal)
-            .catch(setTablesError)
+    const [finishError, setFinishError] = useState([]);
+
+    const history = useHistory();
+
+    const finishHandler = (event) => {
+        event.preventDefault();
+        if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
+            const abortController = new AbortController();
+            // DELETE request
+            async function finish() {
+                try {
+                    await finishTable(table.table_id, abortController.signal);
+                    history.go(0);
+                } catch (error) {
+                    setFinishError([...finishError, error.message]);
+                }
+            }
+            if (finishError.length === 0) {
+                finish();
+            }
         }
-        return () => controller.abort();
     }
-    
-    return(
-        <div>
-        <ErrorAlert error={tablesError} /> 
-        <table className='table'>
-            <thead>
-            <tr>
-                <th scope='col'>Table Name</th>
-                <th scope='col'>Status</th>
-                <th scope='col'>Capacity</th>
-                <th scope='col'></th>
-            </tr>
-            </thead>
-            <tbody>
-                {tables.map((table)=> {
-                    return(
-                        <tr key={table.table_id}>
-                            <td>{table.table_name}</td>
-                            <td>{table.status}</td>
-                            <td>{table.capacity}</td>
-                            <td>{table.status === "occupied" ? <button data-table-id-finish={table.table_id} type="button" className="btn btn-primary" onClick={finishHandler} value={table.table_id}>Finish</button> : null}</td>
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </table>
+
+    return (
+        <div className="card mb-3">
+            <ErrorAlert error={finishError} />
+            <h5 className="card-header">Table {table_name}</h5>
+            <div className="card-body">
+                <p>Capacity: {capacity}</p>
+                <p data-table-id-status={table.table_id}>Status: {status}</p>
+                {status === "Free" ? null : (
+                <button data-table-id-finish={table.table_id} className="btn btn-dark" type="button" onClick={finishHandler}>Finish</button>
+                )}
+            </div>
         </div>
-    )
+    );
 }
