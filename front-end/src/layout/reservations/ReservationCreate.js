@@ -9,7 +9,7 @@ export default function EditReservation() {
     return (
         <section>
             <div className="headingBar d-md-flex my-3 p-2">
-                <h1>Edit Reservation</h1>
+                <h1>New Reservation</h1>
             </div>
             <ReservationForm reservation_id={reservation_id} />
         </section>

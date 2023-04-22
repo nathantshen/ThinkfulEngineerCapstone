@@ -4,11 +4,12 @@ import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
-import NewReservation from "../reservations/NewReservation";
-import EditReservation from "../reservations/EditReservation";
-import NewTable from "../tables/NewTable";
-import Seat from "../reservations/Seat";
-import Search from "../serach/Search";
+import ReservationCreate from "./reservations/ReservationCreate";
+import ReservationSeat from "./reservations/ReservationSeat";
+import TableCreate from "./tables/TableCreate";
+import ReservationEdit from "./reservations/ReservationEdit";
+import ReservationSearch from "./ReservationSearch";
+
 /**
  * Defines all the routes for the application.
  *
@@ -36,26 +37,29 @@ function Routes() {
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route exact={true} path="/reservations">
+      <Route exact path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
+      <Route exact path="/tables">
+        <Dashboard date={date} />
+      </Route>
+      <Route exact path="/search">
+        <ReservationSearch />
+      </Route>
+      <Route exact path="/reservations/new">
+        <ReservationCreate date={date} />
+      </Route>
+      <Route exact path="/reservations/:reservation_id/seat">
+        <ReservationSeat />
+      </Route>
+      <Route exact path="/reservations/:reservation_id/edit">
+        <ReservationEdit date={date} />
+      </Route>
+      <Route exact path="/tables/new">
+        <TableCreate />
+      </Route>
       <Route path="/dashboard">
-      <Dashboard date={today()} />
-      </Route>
-      <Route path="/reservations/new">
-        <NewReservation />
-      </Route>
-      <Route path="/reservations/:reservation_id/edit">
-        <EditReservation />
-      </Route>
-      <Route path="/reservations/:reservation_id/seat">
-        <Seat />
-      </Route>
-      <Route path="/tables/new">
-        <NewTable />
-      </Route>
-      <Route path="/search">
-        <Search />
+        <Dashboard date={date} />
       </Route>
       <Route>
         <NotFound />
@@ -65,5 +69,3 @@ function Routes() {
 }
 
 export default Routes;
-
-

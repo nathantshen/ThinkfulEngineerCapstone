@@ -1,7 +1,7 @@
 import React from "react";
 import TableForm from "./TableForm";
 // defines the New Reservation page
-export default function NewTable() {
+export default function TableCreate() {
 
     return (
         <section>
