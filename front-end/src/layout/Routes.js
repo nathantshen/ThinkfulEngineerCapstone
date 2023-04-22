@@ -4,11 +4,11 @@ import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
-import ReservationCreate from "./reservations/ReservationCreate";
-import ReservationSeat from "./reservations/ReservationSeat";
-import TableCreate from "./tables/TableCreate";
-import ReservationEdit from "./reservations/ReservationEdit";
-import ReservationSearch from "./ReservationSearch";
+import NewReservation from "./reservations/ReservationCreate";
+import Seat from "./Seat";
+import NewTable from "./tables/NewTable";
+import EditReservation from "./reservations/EditReservation";
+import Search from "./Search";
 
 /**
  * Defines all the routes for the application.
