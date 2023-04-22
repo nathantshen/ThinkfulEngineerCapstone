@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import Reservation from "../Reservations/Reservations";
+import Reservation from "../reservations/Reservations";
 
 const formatNumber = mobile_phone => {
   mobile_phone = mobile_phone.toString();

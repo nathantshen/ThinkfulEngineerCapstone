@@ -1,116 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { listTables, updateTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { readReservation, listTables, seatTable } from "../utils/api";
-import Reservation from "./Reservation";
 
 export default function Seat() {
+  const history = useHistory();
+  const { reservation_id } = useParams();
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
+  const [ tableId, setTableId ] = useState(0);
 
-    const initialFormState = {
-        table_id: "",
-    };
-    
-    const [form, setForm] = useState({...initialFormState});
-    const [reservation, setReservation] = useState({});
-    const [tables, setTables] = useState([]);
-    const [seatError, setSeatError] = useState([]);
+  const loadTables = () => {
+    console.log("loadTables")
+    const abortController = new AbortController();
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
+    return () => abortController.abort();
+  };
 
-    const history = useHistory();
-    const { reservation_id } = useParams();
+  useEffect(loadTables, [tables]);
 
-    // read reservation from database by reservation_id
-    // load all tables from database
-    useEffect(() => {
-        const abortController = new AbortController();
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const controller = new AbortController();
+    updateTable(tableId, reservation_id, controller.signal)
+    .then(()=> history.push("/"))
+    .catch(setTablesError)
+    return () => controller.abort()
+  };
 
-        async function loadData() {
-            try {
-                const reservationResponse = await readReservation(reservation_id, abortController.signal);
-                const tablesResponse = await listTables(abortController.signal);
-                const freeTables = tablesResponse.filter(table => {
-                    return table.status === "Free";
-                });
-                setReservation(reservationResponse);
-                setTables(freeTables);
-            } catch (error) {
-                setSeatError([error.message]);
-            }
-        }
-        loadData();
-        return () => abortController.abort();
-    }, [reservation_id]);
+  const cancelHandler = (event) => {
+    event.preventDefault();
+    history.goBack();
+  };
 
-    const handleChange = ({ target }) => {
-        // verify the party will fit at the selected table
-        const selectedTable = tables.find(table => table.table_id === parseInt(target.value));
-        if (selectedTable && selectedTable.capacity < reservation.people) {
-            setSeatError(["Reservation party size will not fit at selected table."]);
-        } else if (!selectedTable) {
-            setSeatError(["Please select a table."]);
-        } else {
-            setSeatError([]);
-        }
-        // set the form state
-        setForm({
-            ...form,
-            [target.name]: target.value,
-        });
-    }
+  const changeHandler = event => {
+    event.preventDefault();
+    setTableId(event.target.value);
+  }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const abortController = new AbortController();
-        // PUT request
-        async function seatReservation() {
-            try {
-                await seatTable(form, reservation_id, abortController.signal);
-                history.push("/dashboard");
-            } catch (error) {
-                setSeatError([...seatError, error.message]);
-            }
-        }
-        // do not send PUT request if there is a pending error message
-        if (seatError.length === 0) {
-            seatReservation();
-        }
-    }
-
-    return(
-        <>
-        <ErrorAlert error={seatError} />
-        <Reservation 
-            reservation_id={reservation.reservation_id}
-            first_name={reservation.first_name}
-            last_name={reservation.last_name}
-            mobile_number={reservation.mobile_number}
-            reservation_time={reservation.reservation_time}
-            people={reservation.people}
-            status={reservation.status}
-        />
-        <h3>Seat</h3>
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="table_id">
-                    Table Number
-                    <select
-                        className="form-control"
-                        id="table_id"
-                        name="table_id"
-                        onChange={handleChange}
-                        value={form.table_id}
-                    >
-                        <option value="">-- Select a Table --</option>
-                        {tables.map(table => (
-                            <option key={table.table_id} value={table.table_id}>
-                                {table.table_name} - {table.capacity}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-            </div>
-            <button className="btn btn-dark" type="submit">Submit</button>
-            <button className="btn btn-dark ml-3" type="button" onClick={() => history.goBack()}>Cancel</button>
-        </form>
-    </>
-    );
+  return (
+    <div>
+      <h1>Seat Reservation</h1>
+      <ErrorAlert error={tablesError} />
+      <form className="d-flex" onSubmit={submitHandler} onReset={cancelHandler}>
+        <select name="table_id" className="form-select mb-2 mr-1" aria-label="Select Table" id="table_id" onChange={changeHandler}>
+          <option defaultValue>Open this select menu</option>
+          {tables.map((table) => {
+            return (
+              <option value={table.table_id} key={table.table_id}>
+                {table.table_name} - {table.capacity}
+              </option>
+            );
+          })}
+        </select>
+        <button type="submit" className="btn btn-primary mb-2 mr-1 ml-1">
+          Submit
+        </button>
+        <button type="reset" className="btn btn-danger mb-2 mr-1 ml-1">
+          Cancel
+        </button>
+      </form>
+    </div>
+  );
 }
