@@ -10,4 +10,4 @@ function ReservationCreate() {
   )
 }
 
-export default ReservationEdit;
+export default ReservationCreate;

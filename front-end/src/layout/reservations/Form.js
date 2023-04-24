@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { getReservation, updateReservation } from "../../utils/api";
 import ErrorAlert from "../ErrorAlert";
 
-function Form({ date }) {
+export default function Form({ date }) {
   const { reservation_id } = useParams();
   const [currentReservation, setCurrentReservation] = useState({reservation_id});
   const [error, setError] = useState(null);
@@ -157,5 +157,3 @@ function Form({ date }) {
     </>
   )
 }
-
-export default ReservationEdit;
