@@ -91,7 +91,7 @@ export default function Form({ date }) {
               className="form-control"
               id="mobile_number"
               name="mobile_number"
-              type="text"
+              type="tel"
               onChange={handleChange}
               required={true}
               placeholder={currentReservation.mobile_number}

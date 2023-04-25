@@ -1,33 +1,11 @@
-const knex = require("../db/connection");
+const knex = require("../db/connection.js");
 
-function list(date) {
+function list(reservation_date) {
   return knex("reservations")
     .select("*")
-    .where({"reservation_date": date})
-    .andWhereNot({"status": "finished"})
+    .where({ reservation_date })
+    .whereNot({ status: "finished" })
     .orderBy("reservation_time");
-}
-
-function create(newReservation) {
-  return knex("reservations")
-    .insert(newReservation)
-    .returning("*")
-    .then(createdRecords => createdRecords[0]);
-}
-
-function read(reservation_id) {
-  return knex("reservations")
-    .select("*")
-    .where({"reservation_id": reservation_id})
-    .first();
-}
-
-function update(updatedReservation) {
-  return knex("reservations")
-    .select("*")
-    .where({"reservation_id": updatedReservation.reservation_id})
-    .update(updatedReservation, "*")
-    .then(updatedRecords => updatedRecords[0]);
 }
 
 function search(mobile_number) {
@@ -39,10 +17,39 @@ function search(mobile_number) {
     .orderBy("reservation_date");
 }
 
-module.exports = {
-    create,
-    list,
-    read,
-    update,
-    search,
+function read(reservation_id) {
+  return knex("reservations").select("*").where({ reservation_id }).first();
 }
+
+function create(reservation) {
+  return knex("reservations")
+    .insert(reservation)
+    .returning("*")
+    .then((createdRecords) => createdRecords[0]);
+}
+
+function update(updatedRes) {
+  console.log("updatedRes", updatedRes);
+  return knex("reservations")
+    .select("*")
+    .where({ reservation_id: updatedRes.reservation_id })
+    .update(updatedRes, "*")
+    .then((createdRecords) => createdRecords[0]);
+}
+
+function updateStatus(reservation_id, status) {
+  return knex("reservations")
+    .select("*")
+    .where({ reservation_id })
+    .update({ status: status }, "*")
+    .then((createdRecords) => createdRecords[0]);
+}
+
+module.exports = {
+  list,
+  search,
+  read,
+  create,
+  update,
+  updateStatus,
+};
