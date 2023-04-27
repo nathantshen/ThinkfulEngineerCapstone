@@ -1,62 +1,55 @@
-const knex = require("../db/connection.js");
+const knex = require("../db/connection");
+const tableName = "tables";
 
 function list() {
-  return knex("tables").select("*").orderBy("table_name");
-}
-
-function read(table_id) {
-  return knex("tables").select("*").where({ table_id }).first();
+  return knex(tableName).orderBy("table_name", "asc");
 }
 
 function create(table) {
-  return knex("tables")
-    .insert(table)
-    .returning("*")
+  return knex(tableName)
+    .insert(table, "*")
     .then((createdRecords) => createdRecords[0]);
 }
 
-function update(reservation_id, table_id) {
-  return knex.transaction(async (trx) => {
+function read(table_id) {
+  return knex(tableName).where({ table_id: table_id }).first();
+}
+
+
+function seat(table_id, reservation_id) {
+  return knex.transaction(async (transaction) => {
     await knex("reservations")
       .where({ reservation_id })
       .update({ status: "seated" })
-      .transacting(trx);
+      .transacting(transaction);
 
     return knex("tables")
-      .select("*")
       .where({ table_id })
-      .update({ reservation_id: reservation_id }, "*")
-      .update({
-        occupied: knex.raw("NOT ??", ["occupied"]),
-      })
-      .transacting(trx)
-      .then((createdRecords) => createdRecords[0]);
+      .update({ reservation_id }, "*")
+      .transacting(transaction)
+      .then((records) => records[0]);
   });
 }
 
-function finish(reservation_id, table_id) {
-  return knex.transaction(async (trx) => {
+function finish(table) {
+  return knex.transaction(async (transaction) => {
     await knex("reservations")
-      .where({ reservation_id })
+      .where({ reservation_id: table.reservation_id })
       .update({ status: "finished" })
-      .transacting(trx);
+      .transacting(transaction);
 
-    return knex("tables")
-      .select("*")
-      .where({ table_id })
+    return knex(tableName)
+      .where({ table_id: table.table_id })
       .update({ reservation_id: null }, "*")
-      .update({
-        occupied: knex.raw("NOT ??", ["occupied"]),
-      })
-      .transacting(trx)
-      .then((createdRecords) => createdRecords[0]);
+      .transacting(transaction)
+      .then((records) => records[0]);
   });
 }
 
 module.exports = {
   list,
-  read,
   create,
-  update,
-  finish,
+  read,
+  seat,
+  finish
 };

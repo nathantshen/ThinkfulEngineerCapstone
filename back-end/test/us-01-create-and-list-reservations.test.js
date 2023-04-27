@@ -12,6 +12,7 @@ describe("US-01 - Create and list reservations", () => {
   });
 
   beforeEach(() => {
+    console.log()
     return knex.seed.run();
   });
 
@@ -354,6 +355,8 @@ describe("US-01 - Create and list reservations", () => {
           first_name: "first",
           last_name: "last",
           mobile_number: "800-555-1212",
+          reservation_date: expect.stringContaining("2025-01-01"),
+          reservation_time: expect.stringContaining("17:30"),
           people: 2,
         })
       );

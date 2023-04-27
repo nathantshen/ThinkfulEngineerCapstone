@@ -40,7 +40,7 @@ describe("US-08 - Change an existing reservation", () => {
     });
 
     test("updates the reservation", async () => {
-      const data = {
+      const expected = {
         first_name: "Mouse",
         last_name: "Whale",
         mobile_number: "1231231235",
@@ -55,7 +55,7 @@ describe("US-08 - Change an existing reservation", () => {
 
       expect(reservation).not.toBeUndefined();
 
-      Object.entries(data).forEach(
+      Object.entries(expected).forEach(
         ([key, value]) => (reservation[key] = value)
       );
 
@@ -67,10 +67,9 @@ describe("US-08 - Change an existing reservation", () => {
       expect(response.body.error).toBeUndefined();
       expect(response.body.data).toEqual(
         expect.objectContaining({
-          first_name: "Mouse",
-          last_name: "Whale",
-          mobile_number: "1231231235",
-          people: 2,
+          ...expected,
+          reservation_date: expect.stringMatching(expected.reservation_date),
+          reservation_time: expect.stringMatching(expected.reservation_time),
         })
       );
       expect(response.status).toBe(200);
