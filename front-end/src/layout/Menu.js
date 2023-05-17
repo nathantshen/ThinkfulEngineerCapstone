@@ -1,6 +1,8 @@
 import React from "react";
+import './Menu.css';
 
 import { Link } from "react-router-dom";
+
 
 /**
  * Defines the menu for this application.
@@ -11,12 +13,14 @@ import { Link } from "react-router-dom";
 function Menu() {
   return (
     <nav className="navbar navbar-dark align-items-start p-0">
-      <div className="container-fluid d-flex flex-column p-0">
+      <div
+        className="container-fluid d-flex flex-column p-0"
+      >
         <Link
           className="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
           to="/"
         >
-          <div className="sidebar-brand-text mx-3">
+          <div className="sidebar-brand-text mx-3" id="top">
             <span>Periodic Tables</span>
           </div>
         </Link>
@@ -47,13 +51,6 @@ function Menu() {
             </Link>
           </li>
         </ul>
-        <div className="text-center d-none d-md-inline">
-          <button
-            className="btn rounded-circle border-0"
-            id="sidebarToggle"
-            type="button"
-          />
-        </div>
       </div>
     </nav>
   );
