@@ -1,16 +1,13 @@
 import React from "react";
+
 import { Redirect, Route, Switch } from "react-router-dom";
-
-//import components
 import Dashboard from "../dashboard/Dashboard";
-import ReservationCreate from "../reservations/ReservationCreate";
-import ReservationSeat from "../reservations/ReservationSeat";
-import ReservationSearch from "../reservations/ReservationSearch";
-import ReservationEdit from "../reservations/ReservationEdit";
-import TableCreate  from "../tables/TableCreate";
 import NotFound from "./NotFound";
-
-//import utility functions
+import New from "../dashboard/New"
+import NewTable from "../dashboard/NewTable";
+import Seat from "../dashboard/Seat";
+import Search from "../dashboard/Search";
+import EditReservation from "../dashboard/EditReservation";
 import { today } from "../utils/date-time";
 
 /**
@@ -21,6 +18,7 @@ import { today } from "../utils/date-time";
  * @returns {JSX.Element}
  */
 function Routes() {
+  
   return (
     <Switch>
       <Route exact={true} path="/">
@@ -30,22 +28,22 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={today()} />
-      </Route>
-      <Route path="/reservations/new">
-        <ReservationCreate />
-      </Route>
-      <Route path="/reservations/:reservation_id/edit">
-        <ReservationEdit />
-      </Route>
-      <Route path="/reservations/:reservation_id/seat">
-        <ReservationSeat />
-      </Route>
-      <Route path="/tables/new">
-        <TableCreate />
+        <Dashboard today={today()} />
       </Route>
       <Route path="/search">
-        <ReservationSearch />
+        <Search />
+      </Route>
+      <Route path="/reservations/new">
+        <New />
+      </Route>
+      <Route path="/tables/new">
+        <NewTable />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation />
+      </Route>
+      <Route path="/reservations/:reservation_id/seat">
+        <Seat />
       </Route>
       <Route>
         <NotFound />

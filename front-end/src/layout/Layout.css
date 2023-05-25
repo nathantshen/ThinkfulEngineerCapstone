@@ -1,21 +1,4 @@
 .side-bar {
-  background-color: #006d77;
+  background-color: #393a44;
   min-width: 200px;
 }
-
-
-
-
-
-
-/* -------  Media Query ------- */
-
-/*for desktop*/
-
-@media all and (min-width: 800px){
-
-.side-bar { 
-  height: 110vh;
-}
-}
-
