@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom"
 import { cancelReservation } from "../utils/api";
-import { formatDate, formatTime } from "../utils/date-time"
+import { formatAsDate, formatAsTime } from "../utils/date-time"
 import ErrorAlert from "../layout/ErrorAlert"
 
 
 export default function Reservations({ reservation }) {
-  const date = formatDate(reservation.reservation_date)
+  const date = formatAsDate(reservation.reservation_date)
   const [reservationsError, setReservationsError] = useState(null)
   const history = useHistory();
   const cancelHandler = async(event) => {
@@ -22,7 +22,7 @@ export default function Reservations({ reservation }) {
   if(reservation.status === 'cancelled') { 
     return null;
   }
-  const time = formatTime(reservation.reservation_time)
+  const time = formatAsTime(reservation.reservation_time)
 
     return (
       <div className='card text-center text-dark bg-warning ml-2' style={{maxWidth: "18rem"}}>

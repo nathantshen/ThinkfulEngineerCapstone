@@ -179,7 +179,7 @@ describe("US-08 - Change an existing reservation - E2E", () => {
       await firstNameInput.type("John");
 
       const [submitButton] = await page.$x(
-        "//button[contains(translate(., 'ACDEFGHIJKLMNOPQRSTUVWXYZ', 'acdefghijklmnopqrstuvwxyz'), 'submit')]"
+        "//button[contains(translate(., 'ACDEFGHIJKLMNOPQRSTUVWXYZ', 'acdefghijklmnopqrstuvwxyz'), 'Book')]"
       );
 
       if (!submitButton) {

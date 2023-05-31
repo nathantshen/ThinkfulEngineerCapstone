@@ -79,7 +79,7 @@ const tableIsValid = (req, res, next) => {
 
 const capacityIsValid = (req,res, next) => {
       const { data: {capacity} } = req.body;
-      if(!capacity) {
+      if(!capacity || typeof capacity == "string") {
         return next({
             status:400,
             message: 'capacity is missing'
@@ -99,7 +99,7 @@ async function list(req,res){
 }
 
 async function create(req, res, next) {
-    const newTable = await TableService.create(req.body.data);
+    const newTable = await TableService.create({...req.body.data,occupied:false});
     
     if(!newTable) {
         return next({
