@@ -6,7 +6,7 @@ import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
 const API_BASE_URL =
-  "http://localhost:5001";
+  "https://thinkfulengineercapstone-gq2y.onrender.com";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
