@@ -11,7 +11,7 @@ const {
   DATABASE_URL = "postgres://ywzjddna:HK2RibePkMnbBvz472wwOx_8qA6RzT-X@floppy.db.elephantsql.com/ywzjddna",
   DATABASE_URL_DEVELOPMENT = "postgres://ywzjddna:HK2RibePkMnbBvz472wwOx_8qA6RzT-X@floppy.db.elephantsql.com/ywzjddna",
   DATABASE_URL_TEST = "postgres://ywzjddna:HK2RibePkMnbBvz472wwOx_8qA6RzT-X@floppy.db.elephantsql.com/ywzjddna",
-  DATABASE_URL_PREVIEW = postgres://ywzjddna:HK2RibePkMnbBvz472wwOx_8qA6RzT-X@floppy.db.elephantsql.com/ywzjddna",
+  DATABASE_URL_PREVIEW = "postgres://ywzjddna:HK2RibePkMnbBvz472wwOx_8qA6RzT-X@floppy.db.elephantsql.com/ywzjddna",
   DEBUG,
 } = process.env;
 
