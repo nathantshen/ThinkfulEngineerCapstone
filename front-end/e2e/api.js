@@ -1,7 +1,7 @@
 const fetch = require("cross-fetch");
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -51,13 +51,12 @@ async function fetchJson(url, options, onCancel) {
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to the newly created reservation.
  */
-async function createReservation(reservation, signal) {
+async function createReservation(reservation) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
     headers,
     body: JSON.stringify({ data: reservation }),
-    signal,
   };
   return await fetchJson(url, options, reservation);
 }
@@ -67,13 +66,12 @@ async function createReservation(reservation, signal) {
  * @returns {Promise<[table]>}
  *  a promise that resolves to the newly created table.
  */
-async function createTable(table, signal) {
+async function createTable(table) {
   const url = `${API_BASE_URL}/tables`;
   const options = {
     method: "POST",
     headers,
     body: JSON.stringify({ data: table }),
-    signal,
   };
   return await fetchJson(url, options, table);
 }

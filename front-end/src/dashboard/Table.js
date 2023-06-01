@@ -28,7 +28,7 @@ export default function Tables({ table }) {
           {table.occupied ?
             <>
               <div>
-                <h6 data-table-id-status={table.table_id} className="btn btn-dark"><span className="oi oi-people" /> occupied</h6>
+                <h6 data-table-id-status={table.table_id} className="btn btn-dark"><span className="oi oi-people" /> Occupied</h6>
               </div>
               <button data-table-id-finish={table.table_id} onClick={(e)=>finishHandler(e)} className='btn btn-danger ml-2 px-2 oi oi-check'> Finish </button>
             </>

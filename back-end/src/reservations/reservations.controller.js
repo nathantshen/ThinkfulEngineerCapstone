@@ -91,6 +91,24 @@ const isValid = (req, res, next) => {
   next();
 };
 
+function addHours(reservations) {
+  if (Array.isArray(reservations)) {
+    return reservations.map((reservation) => {
+      if (reservation.reservation_date && reservation.reservation_date.getTime()) {
+        const newDateTime = new Date(reservation.reservation_date.getTime() + 5 * 60 * 60 * 1000);
+        reservation.reservation_date = newDateTime.toISOString();
+      }
+      return reservation;
+    });
+  } else {
+    if (reservations.reservation_date && reservations.reservation_date.getTime()) {
+      const newDateTime = new Date(reservations.reservation_date.getTime() + 5 * 60 * 60 * 1000);
+      reservations.reservation_date = newDateTime.toISOString();
+    }
+    return reservations;
+  }
+}
+
 async function reservationExists(req, res, next) {
   const { reservationId } = req.params;
   const error = { status: 404, message: `Reservation ${reservationId} cannot be found` };
@@ -131,12 +149,16 @@ async function list(req, res, next) {
     const reservationByNum = await service.listByMobileNum(mobile_number)
     res.status(200).json({data: reservationByNum})
   }
-  const reservation = await service.list(date);
+  let reservation = await service.list(date);
+  reservation = addHours(reservation)
+  reservation = reservation.filter(reserve => reserve.status != "finished")
   res.status(200).json({ data: reservation });
 }
 
 async function create(req,res) {
-   const newReservation = await service.create(req.body.data);
+  let requestBody = {...req.body.data , status:"booked"}
+  let newReservation = await service.create(requestBody);
+   newReservation = addHours(newReservation)
    res.status(201).json({ data: newReservation })
 }
 
@@ -148,8 +170,8 @@ async function read(req, res) {
 async function update(req, res) {
  const { reservationId } = req.params;
 
- const data = await service.update(reservationId, req.body.data);
-
+ let data = await service.update(reservationId, req.body.data);
+  data = addHours(data)
  res.status(200).json({ data: data[0] });
 }
 

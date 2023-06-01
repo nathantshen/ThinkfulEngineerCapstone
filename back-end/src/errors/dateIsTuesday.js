@@ -1,6 +1,6 @@
 function dateIsTuesday(date){
     newDate = new Date(date)
-    if(newDate.getDay() === 1) {
+    if(newDate.getDay() === 2) {
         return true;
     }
     return false;

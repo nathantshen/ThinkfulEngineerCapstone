@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { previous, next, formatDate } from "../utils/date-time";
+import { previous, next, formatAsDate } from "../utils/date-time";
 import Table from "./Table";
 import Reservations from "./Reservations"
 import useQuery from "../utils/useQuery"
@@ -51,7 +51,7 @@ function Dashboard({today}) {
     <main>
       <div className='text-center'>
         <h1 className="mb-2 text-center">Reservations for: </h1>
-        <h3 className="mb-4"><span className="oi oi-calendar" /> { formatDate(date) }</h3>
+        <h3 className="mb-4"><span className="oi oi-calendar" /> { formatAsDate(date) }</h3>
       </div>
       <ErrorAlert error={reservationsError } />
       {/* {JSON.stringify(reservations)} */}

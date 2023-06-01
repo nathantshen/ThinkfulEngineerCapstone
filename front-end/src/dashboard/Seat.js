@@ -11,7 +11,7 @@ export default function Seat(){
     const [reservation, setReservation] = useState({});
     const [tablesError, setTablesError] = useState(null);
     const [formData, setFormData] = useState("Please select a table")
-    const {reservation_id} = useParams();
+    let {reservation_id} = useParams();
     const history = useHistory();
 
     useEffect(() => {
@@ -41,8 +41,9 @@ export default function Seat(){
     const formSubmit = async(event) => {
         event.preventDefault();
         try {
+            reservation_id = parseInt(reservation_id)
             if(formData === "Please select a table") throw new Error("Please Select a table")
-            await updateTable(formData, {data: {reservation_id} })
+            await updateTable(formData,reservation_id)
             history.push(`/dashboard?date=${reservation.reservation_date}`)
         } catch(error) {
             setTablesError(error)
@@ -64,7 +65,7 @@ export default function Seat(){
                     onChange={formChange}
                     value={formData}
                 >
-                    <option> Please select a table</option>
+                    <option value=""> Please select a table</option>
                     {tables.map((table) => (
                         <option key={table.table_id} value={table.table_id}>{table.table_name} - {table.capacity}</option>
                     ))}

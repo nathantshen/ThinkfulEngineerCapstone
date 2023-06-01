@@ -6,7 +6,7 @@ import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
 const API_BASE_URL =
-  "https://thinkfulengineercapstone-gq2y.onrender.com";
+  "http://localhost:5001";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -93,9 +93,9 @@ export async function readReservation(reservation_id, signal){
 
 //Updates a single reservation
 
-export async function updateReservation(updatedReservation, signal){
+export async function updateReservation(reservation_id, updatedReservation){
   const url = new URL(
-    `${API_BASE_URL}/reservations/${updatedReservation.reservation_id}`
+    `${API_BASE_URL}/reservations/${reservation_id}`
   );
   const options = {
     method: "PUT",
@@ -107,20 +107,38 @@ export async function updateReservation(updatedReservation, signal){
     .then(formatReservationTime);
 }
 
+export async function updateTable(table_id, reservation_id) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data :{reservation_id:reservation_id} }),
+  };
+  return await fetchJson(url, options );
+}
 
 //Creates a new table
 
-export async function createTable(table, signal){
+export async function createTable(table){
  
    const url = new URL(`${API_BASE_URL}/tables`);
    const options = {
      method: "POST",
      headers,
      body: JSON.stringify({ data: table }),
-     signal,
    };
    return await fetchJson(url, options, table);
   
+}
+
+export async function clearTable(table_id){
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat/`);
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({ data: {table_id }}),
+  };
+  return await fetchJson(url, options, table_id);
 }
 
 
