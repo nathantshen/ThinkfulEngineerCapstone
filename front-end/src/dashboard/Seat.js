@@ -71,10 +71,6 @@ export default function Seat(){
                     ))}
                 </select>
             </label>
-            <div className="row">
-             <button className="btn btn-success m-2" type="submit"><span className="oi oi-arrow-thick-bottom" /> Seat </button>
-             <button className="btn btn-danger m-2" onClick={handleCancel}><span className="oi oi-ban" /> Cancel </button>
-            </div>
         </form>
         
         {reservation.reservation_id && (
