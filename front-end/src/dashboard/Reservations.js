@@ -35,7 +35,7 @@ export default function Reservations({ reservation }) {
           <p className="card-text">Party Size - <span className="oi oi-people"></span> {reservation.people} </p>
           <p className="card-text fw-bolder" data-reservation-id-status={reservation.reservation_id}>{reservation.status}</p>
           {reservation.status=== "seated" ? null :
-            <Link to={`/reservations/${reservation.reservation_id}/seat`} className="btn btn-success oi oi-arrow-thick-bottom"> Seats </Link>
+            <Link to={`/reservations/${reservation.reservation_id}/seat`} className="btn btn-success oi oi-arrow-thick-bottom"> Seating </Link>
           }
           <Link to={`/reservations/${reservation.reservation_id}/edit`} className="btn btn-secondary ml-1 oi oi-pencil"> Edit</Link>
           <button data-reservation-id-cancel={reservation.reservation_id} onClick={cancelHandler} className="btn btn-danger ml-1 oi oi-trash"> Cancel</button>
